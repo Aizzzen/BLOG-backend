@@ -1,5 +1,7 @@
-import {Column, DataType, Model, Table} from "sequelize-typescript";
+import {BelongsToMany, Column, DataType, Model, Table} from "sequelize-typescript";
 import {ApiProperty} from "@nestjs/swagger";
+import {Role} from "../roles/roles.model";
+import {UserRoles} from "../users-roles/user-roles.model";
 
 // объект пользователя
 interface UserCreationAttrs {
@@ -32,4 +34,8 @@ export class User extends Model<User, UserCreationAttrs> {
     @ApiProperty({example: 'Не решил загадку про стулья', description: 'Причина блокировки'})
     @Column({type: DataType.STRING, allowNull: true})
     banReason: string;
+
+    // с какой сущностью связываем и через какую таблицу
+    @BelongsToMany(() => Role, () => UserRoles)
+    roles: Role[]
 }
