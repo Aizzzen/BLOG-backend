@@ -5,11 +5,17 @@ import {ConfigModule} from "@nestjs/config";
 import {User} from "./users/users.model";
 import { RolesModule } from './roles/roles.module';
 import {Role} from "./roles/roles.model";
-import {UserRoles} from "./users-roles/user-roles.model";
+import {UserRoles} from "./users/users-roles/user-roles.model";
 import { AuthController } from './auth/auth.controller';
 import { AuthService } from './auth/auth.service';
 import { AuthModule } from './auth/auth.module';
 import {JwtModule} from "@nestjs/jwt";
+import { PostsService } from './posts/posts.service';
+import { PostsController } from './posts/posts.controller';
+import { PostsModule } from './posts/posts.module';
+import { CommentsService } from './comments/comments.service';
+import { CommentsController } from './comments/comments.controller';
+import { CommentsModule } from './comments/comments.module';
 
 @Module({
   imports: [
@@ -29,9 +35,11 @@ import {JwtModule} from "@nestjs/jwt";
       UsersModule,
       RolesModule,
       AuthModule,
-      JwtModule
+      JwtModule,
+      PostsModule,
+      CommentsModule
   ],
-  controllers: [AuthController],
-  providers: [AuthService],
+  controllers: [AuthController, PostsController, CommentsController],
+  providers: [AuthService, PostsService, CommentsService],
 })
 export class AppModule {}
