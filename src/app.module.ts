@@ -6,21 +6,22 @@ import {User} from "./users/users.model";
 import { RolesModule } from './roles/roles.module';
 import {Role} from "./roles/roles.model";
 import {UserRoles} from "./users/users-roles/user-roles.model";
-import { AuthController } from './auth/auth.controller';
-import { AuthService } from './auth/auth.service';
 import { AuthModule } from './auth/auth.module';
 import {JwtModule} from "@nestjs/jwt";
-import { PostsService } from './posts/posts.service';
-import { PostsController } from './posts/posts.controller';
 import { PostsModule } from './posts/posts.module';
-import { CommentsService } from './comments/comments.service';
-import { CommentsController } from './comments/comments.controller';
 import { CommentsModule } from './comments/comments.module';
+import {Post} from "./posts/posts.model";
+import { FilesModule } from './files/files.module';
+import { ServeStaticModule } from "@nestjs/serve-static"
+import * as path from "path"
 
 @Module({
   imports: [
       ConfigModule.forRoot({
          envFilePath: `.${process.env.NODE_ENV}.env`
+      }),
+      ServeStaticModule.forRoot({
+          rootPath: path.resolve(__dirname, 'static')
       }),
       SequelizeModule.forRoot({
          dialect: 'postgres',
@@ -29,7 +30,7 @@ import { CommentsModule } from './comments/comments.module';
          username: process.env.POSTGRES_USER,
          password: String(process.env.POSTGRES_PASSWORD),
          database: process.env.POSTGRES_DB,
-         models: [User, Role, UserRoles],
+         models: [User, Role, UserRoles, Post],
          autoLoadModels: true
       }),
       UsersModule,
@@ -37,9 +38,11 @@ import { CommentsModule } from './comments/comments.module';
       AuthModule,
       JwtModule,
       PostsModule,
-      CommentsModule
+      CommentsModule,
+      FilesModule,
+      // Post
   ],
-  controllers: [AuthController, PostsController, CommentsController],
-  providers: [AuthService, PostsService, CommentsService],
+  // controllers: [AuthController, PostsController, CommentsController],
+  // providers: [AuthService, PostsService, CommentsService],
 })
 export class AppModule {}
