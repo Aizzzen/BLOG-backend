@@ -17,10 +17,17 @@ export class RolesController {
         return this.roleService.createRole(dto)
     }
 
-    @ApiOperation({summary: 'Получение пользователя по роли'})
+    // @ApiOperation({summary: 'Получение пользователя по роли'})
+    // @ApiResponse({status: 200, type: Role})
+    // @Get('/:value')
+    // getByValue(@Param('value') value: string) {
+    //     return this.roleService.getRoleByValue(value)
+    // }
+
+    @ApiOperation({summary: 'Получение существующих ролей'})
     @ApiResponse({status: 200, type: Role})
-    @Get('/:value')
-    getByValue(@Param('value') value: string) {
-        return this.roleService.getRoleByValue(value)
+    @Get()
+    getRoles() {
+        return this.roleService.getRoles()
     }
 }

@@ -15,4 +15,11 @@ export class PostsService {
         const post = await this.postRepository.create({...dto, image: fileName})
         return post
     }
+
+    async getAllPosts() {
+        // все поля с которыми связан пользователь будут подтягиваться
+        const posts = await this.postRepository.findAll({include: {all: true}})
+        return posts
+    }
+
 }

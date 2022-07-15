@@ -20,5 +20,10 @@ export class RolesService {
         return role
     }
 
+    async getRoles() {
+        const roles = await this.roleRepository.findAll({include: {all: true}})
+        return roles
+    }
+
 
 }

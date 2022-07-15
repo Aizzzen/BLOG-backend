@@ -17,7 +17,7 @@ export class UsersService {
     async createUser(dto: CreateUserDto) {
         const user = await this.userRepository.create(dto)
         // роль по умолчанию
-        const role = await this.roleService.getRoleByValue("ADMIN")
+        const role = await this.roleService.getRoleByValue("USER")
         // указаать что роль принадлежит пользователю
         // set позволяет перезаписать поля в БД и сразу его обновить
         await user.$set('roles', [role.id])
