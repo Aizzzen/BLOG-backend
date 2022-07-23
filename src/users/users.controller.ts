@@ -1,4 +1,4 @@
-import {Body, Controller, Get, Post, UseGuards, UsePipes} from '@nestjs/common';
+import {Body, Controller, Delete, Get, Param, Post, UseGuards, UsePipes} from '@nestjs/common';
 import {CreateUserDto} from "./dto/create-user.dto";
 import {UsersService} from "./users.service";
 import {ApiOperation, ApiResponse, ApiTags} from "@nestjs/swagger";
@@ -9,6 +9,7 @@ import {RolesGuard} from "../auth/role-guard";
 import {AddRoleDto} from "./dto/add-role.dto";
 import {BanUserDto} from "./dto/ban-user.dto";
 import {ValidationPipe} from "../pipes/validation.pipe";
+import {UnBanUserDto} from "./dto/unban-user.dto";
 
 @ApiTags('Пользователи')
 @Controller('users')
@@ -24,17 +25,38 @@ export class UsersController {
         return this.userService.createUser(userDto)
     }
 
-    @ApiOperation({summary: 'Получение пользователей'})
+    @ApiOperation({summary: 'Получение всех пользователей'})
     @ApiResponse({status: 200, type: [User]})
     // мой декоратор, в нем указываю каким ролям будет доступен этот эндпоинт
-    @Roles("ADMIN")
+
+    // раскоммм
+    // @Roles("ADMIN")
+
     // доступно только авторизованным
     // @UseGuards(JwtAuthGuard)
-    @UseGuards(RolesGuard)
+
+    // раскомм
+    //@UseGuards(RolesGuard)
     @Get()
     getAll(){
         return this.userService.getAllUsers()
     }
+
+    //удаление
+    @ApiOperation({summary: 'Удаление пользователя'})
+    @ApiResponse({status: 200, type: [User]})
+    // мой декоратор, в нем указываю каким ролям будет доступен этот эндпоинт
+    // @Roles("ADMIN")
+    // @UseGuards(RolesGuard)
+    @Delete('/:id')
+    deleteByValue(@Param('id') id: number){
+        return this.userService.deleteByValue(id)
+    }
+
+    @Get('/:value')
+    // getByValue(@Param('value') value: string) {
+    //     return this.roleService.getRoleByValue(value)
+    // }
 
     // Админ выдает роль
     @ApiOperation({summary: 'Выдать роль'})
@@ -47,13 +69,23 @@ export class UsersController {
     }
 
     // Бан пользоватнлей
-    @ApiOperation({summary: 'Забанить пользователя'})
+    @ApiOperation({summary: 'Заблокировать пользователя'})
     @ApiResponse({status: 200})
-    @Roles("ADMIN")
-    @UseGuards(RolesGuard)
+    // @Roles("ADMIN")
+    // @UseGuards(RolesGuard)
     @Post('/ban')
     ban(@Body() dto: BanUserDto){
         return this.userService.ban(dto)
+    }
+
+    // unban пользоватнлей
+    @ApiOperation({summary: 'Разблокировать пользователя'})
+    @ApiResponse({status: 200})
+    // @Roles("ADMIN")
+    // @UseGuards(RolesGuard)
+    @Post('/unban')
+    unban(@Body() dto: UnBanUserDto){
+        return this.userService.unban(dto)
     }
 
 }

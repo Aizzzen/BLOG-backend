@@ -5,6 +5,7 @@ import {CreateUserDto} from "./dto/create-user.dto";
 import {RolesService} from "../roles/roles.service";
 import {AddRoleDto} from "./dto/add-role.dto";
 import {BanUserDto} from "./dto/ban-user.dto";
+import {UnBanUserDto} from "./dto/unban-user.dto";
 
 @Injectable()
 export class UsersService {
@@ -36,6 +37,11 @@ export class UsersService {
         return user
     }
 
+    async deleteByValue(id: number) {
+        const user = await this.userRepository.destroy({where: {id}})
+        return user
+    }
+
     async addRole(dto: AddRoleDto) {
         // получаем id user
         const user = await this.userRepository.findByPk(dto.userId)
@@ -56,6 +62,17 @@ export class UsersService {
         }
         user.banned = true
         user.banReason = dto.banReason
+        // обновляем значение в БД
+        await user.save()
+        return user
+    }
+
+    async unban(dto: UnBanUserDto) {
+        const user = await this.userRepository.findByPk(dto.userId)
+        if(!user) {
+            throw new HttpException('Пользователь не найден', HttpStatus.NOT_FOUND)
+        }
+        user.banned = false
         // обновляем значение в БД
         await user.save()
         return user
