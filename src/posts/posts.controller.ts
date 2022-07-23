@@ -1,4 +1,4 @@
-import {Body, Controller, Get, Post, UploadedFile, UseInterceptors} from '@nestjs/common';
+import {Body, Controller, Delete, Get, Param, Post, UploadedFile, UseInterceptors} from '@nestjs/common';
 import {CreatePostDto} from "./dto/create-post.dto";
 import {PostsService} from "./posts.service";
 import {FileInterceptor} from "@nestjs/platform-express";
@@ -23,10 +23,17 @@ export class PostsController {
     }
 
     @ApiOperation({summary: 'Получение всех постов'})
-    @ApiResponse({status: 200})
+    @ApiResponse({status: 200, type: [Post]})
     @Get()
     getAllPosts() {
         return this.postService.getAllPosts()
+    }
+
+    @ApiOperation({summary: 'Удаление поста'})
+    @ApiResponse({status: 200})
+    @Delete('/:id')
+    deletePost(@Param('id') id: number) {
+        return this.postService.deletePost(id)
     }
 
 }

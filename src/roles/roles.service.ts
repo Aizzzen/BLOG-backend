@@ -21,9 +21,13 @@ export class RolesService {
     }
 
     async getRoles() {
-        const roles = await this.roleRepository.findAll({include: {all: true}})
+        const roles = await this.roleRepository.findAll()
         return roles
     }
 
+    async deleteRole(id: number) {
+        const role = await this.roleRepository.destroy({where: {id}})
+        return role
+    }
 
 }

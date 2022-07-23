@@ -72,7 +72,8 @@ export class UsersService {
         if(!user) {
             throw new HttpException('Пользователь не найден', HttpStatus.NOT_FOUND)
         }
-        user.banned = false
+        user.banned = true
+        user.banReason = null
         // обновляем значение в БД
         await user.save()
         return user

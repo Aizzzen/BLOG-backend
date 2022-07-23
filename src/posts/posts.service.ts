@@ -22,4 +22,9 @@ export class PostsService {
         return posts
     }
 
+    async deletePost(id: number) {
+        const post = await this.postRepository.destroy({where: {id}})
+        return post
+    }
+
 }

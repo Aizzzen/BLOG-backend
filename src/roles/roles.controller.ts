@@ -1,4 +1,4 @@
-import {Body, Controller, Get, Param, Post} from '@nestjs/common';
+import {Body, Controller, Delete, Get, Param, Post} from '@nestjs/common';
 import {RolesService} from "./roles.service";
 import {CreateRoleDto} from "./dto/create-role.dto";
 import {ApiOperation, ApiResponse, ApiTags} from "@nestjs/swagger";
@@ -29,5 +29,12 @@ export class RolesController {
     @Get()
     getRoles() {
         return this.roleService.getRoles()
+    }
+
+    @ApiOperation({summary: 'Удаление ролей'})
+    @ApiResponse({status: 200, type: Role})
+    @Delete('/:id')
+    deleteRole(@Param('id') id: number) {
+        return this.roleService.deleteRole(id)
     }
 }
