@@ -52,4 +52,17 @@ export class AuthService {
         }
         throw new UnauthorizedException({message: 'Некорректный email или пароль'})
     }
+
+    async logout() {
+
+    }
+
+    async activate() {
+
+    }
+
+    async refresh() {
+
+    }
+
 }

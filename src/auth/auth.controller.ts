@@ -23,9 +23,27 @@ export class AuthController {
         return this.authService.registration(userDto)
     }
 
-    // guard - их роль - отграничить доступ к некоторым эндпоинтам
-    // реализуем функционал, который будет запрещать неавторизованным пользователем доступ к тем или иным эндпоинтам
-    // пользователя не сможет получить список польз-й если он неавторизован
+    @ApiOperation({summary: 'Выход'})
+    @ApiResponse({status: 200})
+    @Post('/logout')
+    logout() {
+        return this.authService.logout()
+    }
 
-    // позже сделаем и с администраторами и юзерами
+    // Активация акканута по ссылке на почту
+    @ApiOperation({summary: 'Активация акканута'})
+    @ApiResponse({status: 200})
+    @Post('/activate/:link')
+    activate() {
+        return this.authService.activate()
+    }
+
+    // перезапись access токена если тот умер
+    @ApiOperation({summary: 'Перезапись токена'})
+    @ApiResponse({status: 200})
+    @Post('/refresh')
+    refresh() {
+        return this.authService.refresh()
+    }
+
 }
