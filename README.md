@@ -1,6 +1,6 @@
 ## Описание
 
-Backend для проекта BLOG
+Backend для проекта BLOG *еще в процессе
 
 Технологии: Nest, Typescript, Sequelize, PostgreSQL, JWT
 
