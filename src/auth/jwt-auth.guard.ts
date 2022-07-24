@@ -4,29 +4,24 @@ import {JwtService} from "@nestjs/jwt";
 
 @Injectable()
 export class JwtAuthGuard implements CanActivate {
-    constructor(private jwtService: JwtService) {
-    }
+
+    constructor(private jwtService: JwtService) {}
 
     canActivate(context: ExecutionContext): boolean | Promise<boolean> | Observable<boolean> {
         const req = context.switchToHttp().getRequest()
-        //уже здесь, аналогично express-у, можно получить и деструк сам запрос
+
         try {
             const authHeader = req.headers.authorization
-            // тип токена
             const bearer = authHeader.split(' ')[0]
-            // сам токен
             const token = authHeader.split(' ')[1]
 
-            // если нет токена authorization, пробрасываем ошибку
             if(bearer !== 'Bearer' || !token) {
                 throw new UnauthorizedException({message: 'Пользователь не авторизован'})
             }
 
-            // если есть, то токен декодируем
             const user = this.jwtService.verify(token)
             req.user = user
             return true
-            // если return true то эндпоинты доступны
 
         } catch (e) {
             throw new UnauthorizedException({message: 'Пользователь не авторизован'})

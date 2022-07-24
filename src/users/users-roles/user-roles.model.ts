@@ -7,7 +7,6 @@ export class UserRoles extends Model<UserRoles> {
     @Column({type: DataType.INTEGER, unique: true, autoIncrement: true, primaryKey: true})
     id: number;
 
-    // внешний ключ, который ссылается на ...
     @ForeignKey(() => Role)
     @Column({type: DataType.INTEGER})
     roleId: number;

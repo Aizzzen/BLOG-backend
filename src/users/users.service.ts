@@ -10,24 +10,20 @@ import {UnBanUserDto} from "./dto/unban-user.dto";
 @Injectable()
 export class UsersService {
 
-    // чтобы изначально присвоить роль пользователю
-    constructor(@InjectModel(User) private userRepository: typeof User,
-                private roleService: RolesService) {
-    }
+    constructor(@InjectModel(User)
+                private userRepository: typeof User,
+                private roleService: RolesService
+    ) {}
 
     async createUser(dto: CreateUserDto) {
         const user = await this.userRepository.create(dto)
-        // роль по умолчанию
-        const role = await this.roleService.getRoleByValue("ADMIN")
-        // указаать что роль принадлежит пользователю
-        // set позволяет перезаписать поля в БД и сразу его обновить
+        const role = await this.roleService.getRoleByValue("USER")
         await user.$set('roles', [role.id])
         user.roles = [role]
         return user
     }
 
     async getAllUsers() {
-        // все поля с которыми связан пользователь будут подтягиваться
         const users = await this.userRepository.findAll({include: {all: true}})
         return users
     }
@@ -43,12 +39,9 @@ export class UsersService {
     }
 
     async addRole(dto: AddRoleDto) {
-        // получаем id user
         const user = await this.userRepository.findByPk(dto.userId)
-        // получаем роль из БД
         const role = await this.roleService.getRoleByValue(dto.value)
         if(user && role) {
-            //если роль и пользователь найдены, то добавляем пользоватлею роль
             await user.$add('role', role.id)
             return dto
         }
@@ -62,7 +55,6 @@ export class UsersService {
         }
         user.banned = true
         user.banReason = dto.banReason
-        // обновляем значение в БД
         await user.save()
         return user
     }
@@ -74,7 +66,6 @@ export class UsersService {
         }
         user.banned = true
         user.banReason = null
-        // обновляем значение в БД
         await user.save()
         return user
     }

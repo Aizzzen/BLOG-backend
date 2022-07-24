@@ -12,7 +12,7 @@ export class CreateUserDto {
     @Length(6, 12, {message: 'Пароль должен быть не меньше 6 и не больше 12 символов'})
     readonly password: string;
 
-    // @ApiProperty({example: '*some link', description: 'Ссылка активации'})
-    // @IsOptional()
-    // readonly activationLink: string;
+    @ApiProperty({example: '*some link', description: 'Ссылка активации'})
+    @IsOptional()
+    readonly activationLink: string;
 }

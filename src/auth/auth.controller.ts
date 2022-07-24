@@ -30,7 +30,6 @@ export class AuthController {
         return this.authService.logout()
     }
 
-    // Активация акканута по ссылке на почту
     @ApiOperation({summary: 'Активация акканута'})
     @ApiResponse({status: 200})
     @Post('/activate/:link')
@@ -38,7 +37,6 @@ export class AuthController {
         return this.authService.activate()
     }
 
-    // перезапись access токена если тот умер
     @ApiOperation({summary: 'Перезапись токена'})
     @ApiResponse({status: 200})
     @Post('/refresh')

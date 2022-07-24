@@ -12,12 +12,12 @@ export class AuthService {
 
     constructor(private userService: UsersService,
                 private jwtService: JwtService,
-                private mailService: MailService) {}
+                private mailService: MailService
+    ) {}
 
     async login(userDto: CreateUserDto) {
         const user = await this.validateUser(userDto)
         return this.generateToken(user)
-        //в случае успешной авторизации возвращает пользователя и генерирует jwt токен
     }
 
     async registration(userDto: CreateUserDto) {
@@ -27,12 +27,9 @@ export class AuthService {
         }
         try {
             const hashPassword = await bcrypt.hash(userDto.password, 5);
-            // ссылка для активации
             const activationLink = uuid.v4();
-            // создать пользователя
-            const user = await this.userService.createUser({...userDto, password: hashPassword})
-            // await this.mailService.sendActivationMail(userDto.email, `${process.env.API_URL}/auth/activate/${activationLink}`)
-            // вернет токен
+            const user = await this.userService.createUser({...userDto, password: hashPassword, activationLink: activationLink})
+            await this.mailService.sendActivationMail(userDto.email, `${process.env.API_URL}/auth/activate/${activationLink}`)
             return this.generateToken(user)
         } catch (error) {
             throw new ForbiddenException('Ошибка при регистрации')
@@ -41,7 +38,6 @@ export class AuthService {
     }
 
     private async generateToken(user: User) {
-        // добавим внутрь токена
         const payload = {email: user.email, id: user.id, roles: user.roles}
         return {
             token: this.jwtService.sign(payload)
@@ -50,8 +46,6 @@ export class AuthService {
 
     private async validateUser(userDto: CreateUserDto) {
         const user = await this.userService.getUserByEmail(userDto.email)
-        // сравнение пароля с клиента и с БД
-        // пароль из dto и пароль из БД
         const passwordEquals = await bcrypt.compare(userDto.password, user.password)
         if(user && passwordEquals) {
             return user

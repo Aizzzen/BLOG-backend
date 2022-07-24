@@ -2,7 +2,6 @@ import {BelongsTo, Column, DataType, ForeignKey, Model, Table} from "sequelize-t
 import {ApiProperty} from "@nestjs/swagger";
 import {User} from "../users/users.model";
 
-// объект пользователя
 interface PostCreationAttrs {
     title: string;
     content: string;
@@ -35,7 +34,6 @@ export class Post extends Model<Post, PostCreationAttrs> {
     @Column({type: DataType.INTEGER})
     userId: number;
 
-    // тип связи один ко многим
     @BelongsTo(() => User)
     author: User
 }

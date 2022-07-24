@@ -3,7 +3,6 @@ import {ApiProperty} from "@nestjs/swagger";
 import {User} from "../users/users.model";
 import {UserRoles} from "../users/users-roles/user-roles.model";
 
-// объект пользователя
 interface RoleCreationAttrs {
     value: string;
     description: string;
@@ -23,7 +22,6 @@ export class Role extends Model<Role, RoleCreationAttrs> {
     @Column({type: DataType.STRING, allowNull: false})
     description: string;
 
-    // с какой сущностью связываем и через какую таблицу
     @BelongsToMany(() => User, () => UserRoles)
     users: User[]
 }

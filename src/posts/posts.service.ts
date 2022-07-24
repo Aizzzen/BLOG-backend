@@ -7,8 +7,10 @@ import {FilesService} from "../files/files.service";
 @Injectable()
 export class PostsService {
 
-    constructor(@InjectModel(Post) private postRepository: typeof Post,
-                private fileService: FilesService) {}
+    constructor(@InjectModel(Post)
+                private postRepository: typeof Post,
+                private fileService: FilesService
+    ) {}
 
     async create(dto: CreatePostDto, image: any) {
         const fileName = await this.fileService.createFile(image)
@@ -17,7 +19,6 @@ export class PostsService {
     }
 
     async getAllPosts() {
-        // все поля с которыми связан пользователь будут подтягиваться
         const posts = await this.postRepository.findAll({include: {all: true}})
         return posts
     }
