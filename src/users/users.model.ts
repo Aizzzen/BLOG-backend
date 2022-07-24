@@ -24,15 +24,15 @@ export class User extends Model<User, UserCreationAttrs> {
     @Column({type: DataType.STRING, allowNull: false})
     password: string;
 
+    // //
+    // @ApiProperty({example: 'true', description: 'Активирован или нет'})
+    // @Column({type:DataType.BOOLEAN, defaultValue: false})
+    // isActivated: boolean;
     //
-    @ApiProperty({example: 'true', description: 'Активирован или нет'})
-    @Column({type:DataType.BOOLEAN, defaultValue: false})
-    isActivated: boolean;
-
-    //
-    @ApiProperty({example: '*some link', description: 'Ссылка активации'})
-    @Column({type:DataType.STRING})
-    activationLink: string;
+    // //
+    // @ApiProperty({example: '*some link', description: 'Ссылка активации'})
+    // @Column({type:DataType.STRING})
+    // activationLink: string;
 
     @ApiProperty({example: 'true', description: 'Заблокирован или нет'})
     @Column({type: DataType.BOOLEAN, defaultValue: false})

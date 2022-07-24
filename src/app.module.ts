@@ -19,6 +19,7 @@ import { MailController } from './mail/mail.controller';
 import { MailService } from './mail/mail.service';
 import { MailModule } from './mail/mail.module';
 import * as path from "path"
+import {MailerModule} from "@nestjs-modules/mailer";
 
 @Module({
   imports: [
@@ -46,10 +47,11 @@ import * as path from "path"
       FilesModule,
       TokenModule,
       MailModule,
+      MailerModule,
       // Post
   ],
-  controllers: [TokenController, MailController],
-  providers: [TokenService, MailService],
+  // controllers: [TokenController, MailController],
+  // providers: [TokenService, MailService],
   // controllers: [AuthController, PostsController, CommentsController],
   // providers: [AuthService, PostsService, CommentsService],
 })

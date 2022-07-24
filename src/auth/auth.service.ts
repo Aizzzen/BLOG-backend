@@ -4,12 +4,15 @@ import {UsersService} from "../users/users.service";
 import {JwtService} from "@nestjs/jwt";
 import * as bcrypt from "bcryptjs"
 import {User} from "../users/users.model";
+import * as uuid from "uuid";
+import {MailService} from "../mail/mail.service";
 
 @Injectable()
 export class AuthService {
 
     constructor(private userService: UsersService,
-                private jwtService: JwtService) {}
+                private jwtService: JwtService,
+                private mailService: MailService) {}
 
     async login(userDto: CreateUserDto) {
         const user = await this.validateUser(userDto)
@@ -24,8 +27,11 @@ export class AuthService {
         }
         try {
             const hashPassword = await bcrypt.hash(userDto.password, 5);
+            // ссылка для активации
+            const activationLink = uuid.v4();
             // создать пользователя
             const user = await this.userService.createUser({...userDto, password: hashPassword})
+            // await this.mailService.sendActivationMail(userDto.email, `${process.env.API_URL}/auth/activate/${activationLink}`)
             // вернет токен
             return this.generateToken(user)
         } catch (error) {
