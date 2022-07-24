@@ -27,9 +27,13 @@ export class AuthService {
         }
         try {
             const hashPassword = await bcrypt.hash(userDto.password, 5);
-            const activationLink = uuid.v4();
-            const user = await this.userService.createUser({...userDto, password: hashPassword, activationLink: activationLink})
-            await this.mailService.sendActivationMail(userDto.email, `${process.env.API_URL}/auth/activate/${activationLink}`)
+            // const activationLink = uuid.v4();
+            const user = await this.userService.createUser({
+                ...userDto,
+                password: hashPassword,
+                // activationLink: activationLink
+            })
+            // await this.mailService.sendActivationMail(userDto.email, `${process.env.API_URL}/auth/activate/${activationLink}`)
             return this.generateToken(user)
         } catch (error) {
             throw new ForbiddenException('Ошибка при регистрации')
